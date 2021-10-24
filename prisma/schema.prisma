@@ -1,0 +1,39 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Sticker {
+  id          Int      @id @default(autoincrement())
+  name        String
+  location    Location @relation(fields: [locationId], references: [id])
+  createdBy   User     @relation("createdBy", fields: [createdById], references: [id])
+  createdAt   DateTime @default(now())
+  locationId  Int
+  createdById Int
+  imageUrl    String
+  collectedBy User[]   @relation("collection")
+}
+
+model Location {
+  id      Int       @id @default(autoincrement())
+  lat     Float
+  lng     Float
+  Sticker Sticker[]
+}
+
+model User {
+  id                Int       @id @default(autoincrement())
+  name              String
+  email             String    @unique
+  password          String
+  collectedStickers Sticker[] @relation("collection")
+  Sticker           Sticker[] @relation("createdBy")
+}
