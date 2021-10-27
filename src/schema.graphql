@@ -17,6 +17,7 @@ type Mutation {
     deleteSticker(id: ID!): Sticker!
 }
 
+
 type Sticker {
     id: ID!
     name: String!
