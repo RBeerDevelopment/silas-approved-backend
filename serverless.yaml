@@ -2,19 +2,27 @@
 
 service: apollo-lambda
 provider:
-  name: aws
-  runtime: nodejs14.x
-  region:  eu-central-1
+    name: aws
+    runtime: nodejs14.x
+    region: eu-central-1
+    lambdaHashingVersion: 20201221
 functions:
-  graphql:
-    # this is formatted as <FILENAME>.<HANDLER>
-    handler: graphql.graphqlHandler
-    events:
-    - http:
-        path: /
-        method: post
-        cors: true
-    - http:
-        path: /
-        method: get
-        cors: true
+    graphql:
+        # this is formatted as <FILENAME>.<HANDLER>
+        handler: graphql.graphqlHandler
+        events:
+            - http:
+                  path: /
+                  method: post
+                  cors: true
+            - http:
+                  path: /
+                  method: get
+                  cors: true
+plugins:
+    - serverless-webpack
+    - serverless-dotenv-plugin
+    - serverless-offline
+custom:
+    webpack:
+        includeModules: true

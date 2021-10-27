@@ -1,4 +1,4 @@
 #!/bin/sh
 
-npx prisma migrate dev --preview-feature
+npx prisma migrate deploy --preview-feature
 npx prisma generate
