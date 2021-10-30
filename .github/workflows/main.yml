@@ -19,10 +19,11 @@ jobs:
               uses: actions/setup-node@v1
               with:
                   node-version: ${{ matrix.node-version }}
-            - name: Create file
-              run: |
-                  echo APP_SECRET: ${{secrets.APP_SECRET}} > .env
-                  echo DATABASE_URL: Test >> .env
+            - name: Make envfile
+              uses: SpicyPizza/create-envfile@v1
+              with:
+                  envkey_APP_SECRET: ${{secrets.APP_SECRET}}
+                  envkey_DATABASE_URL: ${{secrets.DATABASE_URL}}
             - run: npm ci
             - name: serverless deploy
               uses: serverless/github-action@master
