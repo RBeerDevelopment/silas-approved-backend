@@ -1,15 +1,13 @@
 {
-  "name": "graphql-demo",
+  "name": "silas-approved-backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "start-local": "serverless offline --noPrependStageInUrl"
   },
   "keywords": [],
-  "author": "",
+  "author": "Robin Beer",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^3.2.1",

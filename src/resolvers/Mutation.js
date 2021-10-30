@@ -43,9 +43,11 @@ async function login(parent, args, context, info) {
 async function post(parent, args, context, info) {
     const { userId } = context;
 
+    const { name, type, lat, lng, image } = args;
+
     let s3url;
 
-    if (args.image) {
+    if (image) {
         const { createReadStream, filename, mimetype } = await args.image;
 
         s3url = await s3uploader.upload(createReadStream(), {
@@ -56,9 +58,10 @@ async function post(parent, args, context, info) {
 
     const newSticker = await context.prisma.sticker.create({
         data: {
-            name: args.name,
+            name,
+            type,
             location: {
-                create: { lat: args.lat, lng: args.lng },
+                create: { lat, lng },
             },
             createdBy: {
                 connect: { id: userId },
