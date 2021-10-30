@@ -1,9 +1,20 @@
 const { s3uploader } = require('../s3/s3-upload');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { APP_SECRET, getTokenPayload } = require('../utils');
+const {
+    APP_SECRET,
+    getTokenPayload,
+    validateEmailAddress,
+    validatePassword,
+} = require('../utils');
 
 async function signup(parent, args, context, info) {
+    const isValidEmail = validateEmailAddress(args.email);
+    if (!isValidEmail) throw new Error('invalid_email');
+
+    const isValidPassword = validatePassword(args.password);
+    if (!isValidPassword) throw new Error('invalid_password');
+
     const password = await bcrypt.hash(args.password, 10);
 
     const user = await context.prisma.user.create({
@@ -18,18 +29,21 @@ async function signup(parent, args, context, info) {
 }
 
 async function login(parent, args, context, info) {
+    const isValidEmail = validateEmailAddress(args.email);
+    if (!isValidEmail) throw new Error('invalid_email');
+
     const user = await context.prisma.user.findUnique({
         where: { email: args.email },
     });
 
     if (!user) {
-        throw new Error('No such user');
+        throw new Error('no_such_user');
     }
 
     const valid = await bcrypt.compare(args.password, user.password);
 
     if (!valid) {
-        throw new Error('Invalid password');
+        throw new Error('invalid_password');
     }
 
     const token = jwt.sign({ userId: user.id }, APP_SECRET);
