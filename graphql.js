@@ -15,9 +15,8 @@ const prisma = new PrismaClient();
 const pubsub = new PubSub();
 
 const typeDefs = gql`
-
     scalar Upload
-    
+
     type Query {
         stickers(filter: String, skip: Int, take: Int): [Sticker]!
         collectedStickers: [Sticker]!
@@ -79,9 +78,7 @@ const server = new ApolloServer({
     typeDefs,
     resolvers,
     introspection: true,
-    playground: {
-        endpoint: "/dev/graphql"
-    },
+    playground: true,
     context: ({ req }) => {
         return {
             ...req,
@@ -92,13 +89,9 @@ const server = new ApolloServer({
     },
 });
 
-// server
-//     .listen({ port: process.env.PORT || 4000 })
-//     .then(({ url }) => console.log(`Server is running on ${url}`));
-
 exports.graphqlHandler = server.createHandler({
     cors: {
         origin: '*',
         credentials: true,
-      },
+    },
 });
