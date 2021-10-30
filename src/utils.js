@@ -23,8 +23,21 @@ function getUserId(req, authToken) {
     throw new Error('Not authenticated');
 }
 
+function validateEmailAddress(possibleMail) {
+    const emailRegex =
+        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+    return emailRegex.test(possibleMail);
+}
+
+// password should be at least eight chars long
+function validatePassword(password) {
+    return password.length >= 8;
+}
+
 module.exports = {
     APP_SECRET,
     getUserId,
     getTokenPayload,
+    validateEmailAddress,
+    validatePassword,
 };
